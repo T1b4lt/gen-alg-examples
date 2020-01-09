@@ -70,6 +70,7 @@ def main(cliargs):
 	mutation_rate = -1
 	darwin = False
 	migration_rate = -1
+	mutation_type = 1
 	if type_genalg == SXIII:
 		mutation_rate = 0.1
 		darwin = True
@@ -118,7 +119,7 @@ def main(cliargs):
 			fitness_values = fitness_population(population, weights)  # Calculate the fitness of the actual population
 			selected_parents = select_parents(population, fitness_values)  # Select 50% of best parents
 			offsprings_array = general_crossover(selected_parents, type_genalg)  # Cross parents to generate offsprings
-			mutated_offsprings = general_mutation(offsprings_array, mutation_rate)  # Mutate offsprings TODO mutation types
+			mutated_offsprings = general_mutation(offsprings_array, mutation_rate, mutation_type)  # Mutate offsprings
 			if darwin:  # If darwin is True we select only population/2 offsprings for the next population
 				offsprings_fitness_values = fitness_population(mutated_offsprings, weights)  # Calculate the fitness of the offsprings
 				selected_offsprings = select_offsprings(mutated_offsprings, offsprings_fitness_values, num=len(

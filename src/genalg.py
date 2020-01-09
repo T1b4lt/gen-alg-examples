@@ -1,8 +1,11 @@
 import argparse
 import random
-import numpy as np
 
-from src.utils.utils import create_population, Population
+from src.utils.crossover import general_crossover
+from src.utils.darwin import select_offsprings
+from src.utils.migrations import migrate_indvs
+from src.utils.mutation import general_mutation
+from src.utils.utils import Population, fitness_population, select_parents
 
 SXIII = 1
 SXXI = 2
@@ -118,7 +121,8 @@ def main(cliargs):
 			mutated_offsprings = general_mutation(offsprings_array, mutation_rate)  # Mutate offsprings TODO mutation types
 			if darwin:  # If darwin is True we select only population/2 offsprings for the next population
 				offsprings_fitness_values = fitness_population(mutated_offsprings, weights)  # Calculate the fitness of the offsprings
-				selected_offsprings = select_offsprings(mutated_offspring, offsprings_fitness_values, num=len(population) / 2)  # Select the best offsprings for next generation
+				selected_offsprings = select_offsprings(mutated_offsprings, offsprings_fitness_values, num=len(
+					population) / 2)  # Select the best offsprings for next generation
 			else:  # If darwin is False all offsprings go to the next generation
 				selected_offsprings = mutated_offsprings
 			population.population = selected_parents + selected_offsprings  # Create the next generation

@@ -36,3 +36,13 @@ class Population:
 
 	def __len__(self):
 		return len(self.population)
+
+
+def fitness_population(population, weights):
+	print("FITNESS")
+	return []
+
+
+def select_parents(population, fitness_values):
+	print("SELECT PARENTS")
+	return []

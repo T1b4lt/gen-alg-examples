@@ -25,43 +25,43 @@ def main(cliargs):
 	w5 = int(input("Weight 5: "))
 	w6 = int(input("Weight 6: "))
 	weights = [w1, w2, w3, w4, w5, w6]
-	print("Weights to optimize:", weights)
+	print(f"{BColors.OKBLUE}Weights to optimize:", weights, f"{BColors.ENDC}")
 
 	# Select the mode of execution of the genetic algorithm #
 	print("\nNow select the genetic mode of execution")
 	type_genalg = int(input("Type 1 for s.XIII mode, 2 for s.XXI mode, see the differences in the README: "))
 	if type_genalg == SXIII:
-		print("You select s.XIII mode")
+		print(f"{BColors.OKBLUE}You select s.XIII mode{BColors.ENDC}")
 	elif type_genalg == SXXI:
-		print("You select s.XXI mode")
+		print(f"{BColors.OKBLUE}You select s.XXI mode{BColors.ENDC}")
 	else:
 		while True:
-			type_genalg = int(input("Please, enter 1 for s.XIII mode, 2 for s.XXI mode: "))
+			type_genalg = int(input(f"{BColors.FAIL}Please, enter 1 for s.XIII mode, 2 for s.XXI mode: {BColors.ENDC}"))
 			if type_genalg == SXIII:
-				print("You select s.XIII mode")
+				print(f"{BColors.OKBLUE}You select s.XIII mode{BColors.ENDC}")
 				break
 			elif type_genalg == SXXI:
-				print("You select s.XXI mode")
+				print(f"{BColors.OKBLUE}You select s.XXI mode{BColors.ENDC}")
 				break
 
 	# Migration #
 	print("\nDo you want multiple populations and activate migration?")
 	migration_input = input("Yes or No: ")
 	if migration_input == "Yes":
-		print("You select yes for migration")
+		print(f"{BColors.OKBLUE}You select yes for migration{BColors.ENDC}")
 		migration = True
 	elif migration_input == "No":
-		print("You select no for migration")
+		print(f"{BColors.OKBLUE}You select no for migration{BColors.ENDC}")
 		migration = False
 	else:
 		while True:
-			migration_input = input("Please, type Yes or No: ")
+			migration_input = input(f"{BColors.FAIL}Please, type Yes or No: {BColors.ENDC}")
 			if migration_input == "Yes":
-				print("You select yes for migration")
+				print(f"{BColors.OKBLUE}You select yes for migration{BColors.ENDC}")
 				migration = True
 				break
 			elif migration_input == "No":
-				print("You select no for migration")
+				print(f"{BColors.OKBLUE}You select no for migration{BColors.ENDC}")
 				migration = False
 				break
 
@@ -110,14 +110,15 @@ def main(cliargs):
 		populations.append(population)
 		print("Adding population to populations:\n", population)
 	print("\n")
+	print("Populations")
 	print(populations)
 
 	# EPOCHS #
 	for epoch in range(epochs):
-		print("Epoch", epoch + 1, "of", epochs)
+		print("\nEpoch", epoch + 1, "of", epochs)
 		# LOOP START #
 		for idx, population in enumerate(populations):
-			print("Population", idx, "of", len(populations))
+			print("\nPopulation", idx+1, "of", len(populations))
 			fitness_values = fitness_population(population, weights)  # Calculate the fitness of the actual population
 			selected_parents = select_parents(population, fitness_values)  # Select 50% of best parents
 			offsprings_array = general_crossover(selected_parents, type_genalg)  # Cross parents to generate offsprings
@@ -147,13 +148,6 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser(
 		description="genetic algorithm examples",
 		epilog="A bunch of examples and possibilities to learn how genetic algorithms works.")
-
-	"""
-	parser.add_argument(
-		"--type",
-		help="for s.XIII genalg type 1, for s.XXI genalg type 2",
-		metavar="type")
-	"""
 
 	args = parser.parse_args()
 	main(args)

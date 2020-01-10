@@ -1,11 +1,13 @@
 import argparse
 import random
 
+import numpy as np
+
 from src.utils.crossover import general_crossover
 from src.utils.darwin import select_offsprings
 from src.utils.migrations import migrate_indvs
 from src.utils.mutation import general_mutation
-from src.utils.utils import Population, fitness_population, select_parents
+from src.utils.utils import Population, BColors, fitness_population, select_parents, fitness_offsprings
 
 SXIII = 1
 SXXI = 2
@@ -112,7 +114,7 @@ def main(cliargs):
 
 	# EPOCHS #
 	for epoch in range(epochs):
-		print("Epoch", epoch, "of", epochs)
+		print("Epoch", epoch + 1, "of", epochs)
 		# LOOP START #
 		for idx, population in enumerate(populations):
 			print("Population", idx, "of", len(populations))
@@ -121,13 +123,22 @@ def main(cliargs):
 			offsprings_array = general_crossover(selected_parents, type_genalg)  # Cross parents to generate offsprings
 			mutated_offsprings = general_mutation(offsprings_array, mutation_rate, mutation_type)  # Mutate offsprings
 			if darwin:  # If darwin is True we select only population/2 offsprings for the next population
-				offsprings_fitness_values = fitness_population(mutated_offsprings, weights)  # Calculate the fitness of the offsprings
-				selected_offsprings = select_offsprings(mutated_offsprings, offsprings_fitness_values, num=len(
-					population) / 2)  # Select the best offsprings for next generation
+				offsprings_fitness_values = fitness_offsprings(mutated_offsprings,
+															   weights)  # Calculate the fitness of the offsprings
+				selected_offsprings = select_offsprings(mutated_offsprings, offsprings_fitness_values, num=int(
+					len(population) / 2))  # Select the best offsprings for next generation
 			else:  # If darwin is False all offsprings go to the next generation
 				selected_offsprings = mutated_offsprings
 			population.population = selected_parents + selected_offsprings  # Create the next generation
 			populations[idx] = population  # Replace the population
+			print("Max fitness of epoch:")
+			max_fitness_value_epoch = 0
+			for pop in populations:
+				fitness_values = fitness_population(pop, weights)
+				max_aux = np.max(fitness_values)
+				if max_aux > max_fitness_value_epoch:
+					max_fitness_value_epoch = max_aux
+			print(f"{BColors.WARNING}", max_fitness_value_epoch, f"{BColors.ENDC}")
 		if migration:  # If migration is True execute the method migrate_indvs
 			populations = migrate_indvs(populations, migration_rate)  # Migrate indvs inter populations
 

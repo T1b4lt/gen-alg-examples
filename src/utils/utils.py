@@ -3,6 +3,17 @@ import uuid
 import numpy as np
 
 
+class BColors:
+	HEADER = '\033[95m'
+	OKBLUE = '\033[94m'
+	OKGREEN = '\033[92m'
+	WARNING = '\033[93m'
+	FAIL = '\033[91m'
+	ENDC = '\033[0m'
+	BOLD = '\033[1m'
+	UNDERLINE = '\033[4m'
+
+
 class Indv:
 	def __init__(self, indv_size):
 		self.indv_size = indv_size
@@ -38,11 +49,37 @@ class Population:
 		return len(self.population)
 
 
-def fitness_population(population, weights):
-	print("FITNESS")
-	return []
+def fitness_offsprings(mutated_offsprings, func_weights):
+	fitness_array = []
+	for indv in mutated_offsprings:
+		fitness_array.append(fitness_max_function(indv.weights, func_weights))
+	print("Actual offsprings fitness values:")
+	print(fitness_array)
+	return fitness_array
+
+
+def fitness_population(population, func_weights):
+	fitness_array = []
+	for indv in population.population:
+		fitness_array.append(fitness_max_function(indv.weights,
+												  func_weights))  # Calculate the fitness value for each indv of the population
+	print("Actual fitness values:")
+	print(fitness_array)
+	return fitness_array
+
+
+def fitness_max_function(indv_weights, func_weights):
+	return np.dot(indv_weights, func_weights)
 
 
 def select_parents(population, fitness_values):
-	print("SELECT PARENTS")
-	return []
+	num_parents = int(len(population) / 2)  # We want the best 50% of the parents
+	parents = []
+	for parent_num in range(num_parents):  # For each parent
+		max_fitness_idx = np.where(fitness_values == np.max(fitness_values))  # Get the index of the max fitness value
+		max_fitness_idx = max_fitness_idx[0][0]
+		parents.append(population.population[max_fitness_idx])
+		fitness_values[max_fitness_idx] = -99999999999  # Change his fitness to a minimum
+	print("Selected parents:")
+	print(parents)
+	return parents

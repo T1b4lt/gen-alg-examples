@@ -3,11 +3,11 @@ import random
 
 import numpy as np
 
-from src.utils.crossover import general_crossover
-from src.utils.darwin import select_offsprings
-from src.utils.migrations import migrate_indvs
-from src.utils.mutation import general_mutation
-from src.utils.utils import Population, BColors, fitness_population, select_parents, fitness_offsprings
+from utils.crossover import general_crossover
+from utils.darwin import select_offsprings
+from utils.migrations import migrate_indvs
+from utils.mutation import general_mutation
+from utils.utils import Population, BColors, fitness_population, select_parents, fitness_offsprings
 
 SXIII = 1
 SXXI = 2

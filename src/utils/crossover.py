@@ -1,6 +1,6 @@
 import random
 
-from src.utils.utils import Indv
+from utils.utils import Indv
 
 
 def general_crossover(selected_parents, type_genalg):
